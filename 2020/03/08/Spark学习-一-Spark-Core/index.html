@@ -27,14 +27,17 @@
 <meta property="og:site_name" content="Lei&#39;s Blog">
 <meta property="og:description" content="Spark Core1.RDD1.1什么是RDD？RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据抽象，它代表一个不可变、可分区、里面的元素可并行计算的集合。RDD具有数据流模型的特点：自动容错、位置感知性调度和可伸缩性。RDD允许用户在执行多个查询时显式地将工作集缓存在内存中，后续的查询能够重用工作集，这极大地提升了查询速度。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="f:/Blogs/source/img/算子分类一.png">
+<meta property="og:image" content="f:/Blogs/source/images/20200308/广播变量.png">
+<meta property="og:image" content="f:%5CBlogs%5Csource%5Cimages%5C20200308%5C%E5%AE%BD%E7%AA%84%E4%BE%9D%E8%B5%96.png">
+<meta property="og:image" content="f:%5CBlogs%5Csource%5Cimages%5C20200308%5Cstage%E5%88%92%E5%88%86.png">
+<meta property="og:image" content="f:%5CBlogs%5Csource%5Cimages%5C20200308%5Cyarn%E8%B0%83%E5%BA%A6%E8%BF%87%E7%A8%8B.png">
+<meta property="og:image" content="f:%5CBlogs%5Csource%5Cimages%5C20200308%5Cspark%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png">
 <meta property="article:published_time" content="2020-03-08T04:15:07.000Z">
-<meta property="article:modified_time" content="2020-03-08T15:20:00.068Z">
+<meta property="article:modified_time" content="2020-03-09T08:40:00.058Z">
 <meta property="article:author" content="malei">
 <meta property="article:tag" content="Spark">
-<meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="f:/Blogs/source/img/算子分类一.png">
+<meta name="twitter:image" content="f:/Blogs/source/images/20200308/广播变量.png">
 
 <link rel="canonical" href="http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%80-Spark-Core/">
 
@@ -221,9 +224,24 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-08 12:15:07 / 修改时间：23:20:00" itemprop="dateCreated datePublished" datetime="2020-03-08T12:15:07+08:00">2020-03-08</time>
+              <time title="创建时间：2020-03-08 12:15:07" itemprop="dateCreated datePublished" datetime="2020-03-08T12:15:07+08:00">2020-03-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-09 16:40:00" itemprop="dateModified" datetime="2020-03-09T16:40:00+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
+                </span>
             </span>
 
           
@@ -231,13 +249,13 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-file-word-o"></i>
               </span>
-              <span>607</span>
+              <span>4.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
-              <span>1 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -276,34 +294,148 @@
 </ul>
 </li>
 </ul>
-<h3 id="1-3Spark算子类型"><a href="#1-3Spark算子类型" class="headerlink" title="1.3Spark算子类型"></a>1.3Spark算子类型</h3><ul>
-<li><p>Create</p>
-<ul>
-<li>SparkContext.textFile()</li>
-<li>SparkContext.parallelize()</li>
-</ul>
+<h3 id="1-3创建RDD"><a href="#1-3创建RDD" class="headerlink" title="1.3创建RDD"></a>1.3创建RDD</h3><p>Spark Core提供了三种创建RDD的方式，如下：</p>
+<ol>
+<li><p>使用程序中的集合创建（主要用于测试）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">JavaRDD&lt;Integer&gt; rdd = sc.parallelize(list);</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Transformation</p>
-<ul>
-<li>作用于一个或者多个RDD，输出转换后的RD</li>
-<li>如：map, filter, groupBy</li>
-</ul>
+<li><p>使用本地文件创建（主要用于临时性处理有大量数据的文件）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SparkSession session = SparkSession.builder().master(<span class="string">"local"</span>).appName(<span class="string">"WordCountLocal"</span>).getOrCreate();</span><br><span class="line">JavaRDD&lt;String&gt; lines = session.read().textFile(<span class="string">"D:\\spark.txt"</span>).javaRDD();</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Action<strong>（只有遇到Action算子时才会真正执行）</strong></p>
-<ul>
-<li><p>会触发Spark提交作业，并将结果返回Driver Program</p>
+<li><p>使用HDFS文件创建（生产环境的常用方式）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SparkSession spark = SparkSession.builder().appName(<span class="string">"WordCountCluster"</span>).getOrCreate();</span><br><span class="line">JavaRDD&lt;String&gt; lines = spark.read().textFile(<span class="string">"hdfs://h0:9000/spark.txt"</span>).javaRDD();</span><br></pre></td></tr></table></figure>
+
 </li>
-<li><p>如：reduce, countByKey</p>
-</li>
-</ul>
-</li>
-<li><p>Cache</p>
-<ul>
-<li>cache 缓存/persist 持久化</li>
-</ul>
-</li>
-</ul>
-<img src="F:\Blogs\source\img\算子分类一.png" style="zoom:75%;" />
+</ol>
+<h3 id="1-4操作RDD"><a href="#1-4操作RDD" class="headerlink" title="1.4操作RDD"></a>1.4操作RDD</h3><p>Spark支持两种RDD操作：transformation和action。</p>
+<h4 id="1-4-1transformation操作"><a href="#1-4-1transformation操作" class="headerlink" title="1.4.1transformation操作"></a>1.4.1transformation操作</h4><p>transformation算子会针对已有的RDD创建一个新的RDD。该类算子不会触发spark程序的执行，它们只是记录的对RDD进行的操作，只有当遇到action类型算子时，之前的所有transformation才会执行。</p>
+<p>常用的transformation算子：</p>
+<table>
+<thead>
+<tr>
+<th>转换</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>map</strong>(func)</td>
+<td>返回一个新的RDD，该RDD由每一个输入元素经过func函数转换后组成</td>
+</tr>
+<tr>
+<td><strong>filter</strong>(func)</td>
+<td>返回一个新的RDD，该RDD由经过func函数计算后返回值为true的输入元素组成</td>
+</tr>
+<tr>
+<td><strong>flatMap</strong>(func)</td>
+<td>类似于map，但是每一个输入元素可以被映射为0或多个输出元素（所以func应该返回一个序列，而不是单一元素）</td>
+</tr>
+<tr>
+<td><strong>mapPartitions</strong>(func)</td>
+<td>类似于map，但独立地在RDD的每一个分片上运行，因此在类型为T的RDD上运行时，func的函数类型必须是Iterator[T] =&gt; Iterator[U]</td>
+</tr>
+<tr>
+<td><strong>union</strong>(otherDataset)</td>
+<td>对源RDD和参数RDD求并集后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>intersection</strong>(otherDataset)</td>
+<td>对源RDD和参数RDD求交集后返回一个新的RDD</td>
+</tr>
+<tr>
+<td><strong>groupByKey</strong>([numTasks])</td>
+<td>在一个(K,V)的RDD上调用，返回一个(K, Iterator[V])的RDD</td>
+</tr>
+<tr>
+<td><strong>reduceByKey</strong>(func, [numTasks])</td>
+<td>在一个(K,V)的RDD上调用，返回一个(K,V)的RDD，使用指定的reduce函数，将相同key的值聚合到一起，与groupByKey类似，reduce任务的个数可以通过第二个可选的参数来设置</td>
+</tr>
+<tr>
+<td><strong>sortByKey</strong>([ascending], [numTasks])</td>
+<td>在一个(K,V)的RDD上调用，K必须实现Ordered接口，返回一个按照key进行排序的(K,V)的RDD</td>
+</tr>
+<tr>
+<td><strong>join</strong>(otherDataset, [numTasks])</td>
+<td>在类型为(K,V)和(K,W)的RDD上调用，返回一个相同key对应的所有元素对在一起的(K,(V,W))的RDD 相当于内连接（求交集）</td>
+</tr>
+<tr>
+<td><strong>cogroup</strong>(otherDataset, [numTasks])</td>
+<td>在类型为(K,V)和(K,W)的RDD上调用，返回一个(K,(Iterable<V>,Iterable<W>))类型的RDD</td>
+</tr>
+</tbody></table>
+<h4 id="1-4-2action操作"><a href="#1-4-2action操作" class="headerlink" title="1.4.2action操作"></a>1.4.2action操作</h4><p>action算子触发代码的执行。</p>
+<p>常用的action算子：</p>
+<table>
+<thead>
+<tr>
+<th>动作</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>reduce</strong>(<em>func</em>)</td>
+<td>通过func函数聚集RDD中的所有元素，这个功能必须是课交换且可并联的</td>
+</tr>
+<tr>
+<td><strong>collect</strong>()</td>
+<td>在驱动程序中，以数组的形式返回数据集的所有元素</td>
+</tr>
+<tr>
+<td><strong>count</strong>()</td>
+<td>返回RDD的元素个数</td>
+</tr>
+<tr>
+<td><strong>first</strong>()</td>
+<td>返回RDD的第一个元素（类似于take(1)）</td>
+</tr>
+<tr>
+<td><strong>take</strong>(<em>n</em>)</td>
+<td>返回一个由数据集的前n个元素组成的数组</td>
+</tr>
+<tr>
+<td><strong>saveAsTextFile</strong>(<em>path</em>)</td>
+<td>将数据集的元素以textfile的形式保存到HDFS文件系统或者其他支持的文件系统，对于每个元素，Spark将会调用toString方法，将它装换为文件中的文本</td>
+</tr>
+<tr>
+<td><strong>foreach</strong>(<em>func</em>)</td>
+<td>在数据集的每一个元素上，运行函数func进行更新。</td>
+</tr>
+<tr>
+<td><strong>countByKey</strong>()</td>
+<td>针对(K,V)类型的RDD，返回一个(K,Int)的map，表示每一个key对应的元素个数。</td>
+</tr>
+</tbody></table>
+<h4 id="1-4-3RDD持久化"><a href="#1-4-3RDD持久化" class="headerlink" title="1.4.3RDD持久化"></a>1.4.3RDD持久化</h4><p>调用cache()或者persist()方法即可。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> lines = spark.read.textFile(<span class="string">"hdfs://h0:9000/spark.txt"</span>).persist()</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-共享变量"><a href="#2-共享变量" class="headerlink" title="2.共享变量"></a>2.共享变量</h2><p>Spark提供了两种共享变量：Broadcast Variable（广播变量）和Accumulator（累加器）。</p>
+<h3 id="2-1Broadcast-Variable（广播变量）"><a href="#2-1Broadcast-Variable（广播变量）" class="headerlink" title="2.1Broadcast Variable（广播变量）"></a>2.1Broadcast Variable（广播变量）</h3><p>广播变量会将使用到的变量，仅仅为每个executor拷贝一份，这个executor启动的task会共享这个变量，从而减少网络传输以及内存消耗。广播变量是只读的。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明一个广播变量</span></span><br><span class="line"><span class="keyword">val</span> factor = <span class="number">3</span></span><br><span class="line"><span class="keyword">val</span> broadcastVars = sc.broadcast(factor)</span><br><span class="line"><span class="comment">//获取一个广播变量的值</span></span><br><span class="line"><span class="keyword">val</span> value = broadcastVars.value</span><br></pre></td></tr></table></figure>
+
+<img src="F:\Blogs\source\images\20200308\广播变量.png" style="zoom:75%;" />
+
+<h3 id="2-2Accumulator（累加器）"><a href="#2-2Accumulator（累加器）" class="headerlink" title="2.2Accumulator（累加器）"></a>2.2Accumulator（累加器）</h3><p>在spark应用程序中，我们经常会有这样的需求，如异常监控、调试，记录符合某特性的数据条目数等，这都需要使用到计数器，如果一个变量不被声明为一个累加器，那么它在改变时不会在driver端进行全局汇总，即在分布式运行时每个task运行的只是一个变量的副本，并不能改变原始变量的值。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明一个累加器</span></span><br><span class="line"><span class="keyword">val</span> accumulator = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"><span class="comment">//获取累加器的值</span></span><br><span class="line"><span class="keyword">val</span> value = accumulator.value</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-宽窄依赖"><a href="#3-宽窄依赖" class="headerlink" title="3.宽窄依赖"></a>3.宽窄依赖</h2><p>由于RDD是粗粒度的操作数据集，每个transformation都会生成一个新的RDD，所以RDD之间就会形成类似流水线的前后依赖关系，这种依赖关系分为两种不同的类型，即窄依赖（narrow dependency）和宽依赖（wide dependency）。</p>
+<p><img src="F:%5CBlogs%5Csource%5Cimages%5C20200308%5C%E5%AE%BD%E7%AA%84%E4%BE%9D%E8%B5%96.png" alt="宽窄依赖图示"></p>
+<p>窄依赖：是指每个父RDD的一个Partition最多被子RDD的一个Partition所使用，例如map、filter、union等操作都会产生窄依赖；</p>
+<p>宽依赖：是指一个父RDD的Partition会被多个子RDD的Partition所使用，例如groupByKey、reduceByKey、sortByKey等操作都会产生宽依赖。</p>
+<p><strong>窄依赖无数据shuffle，宽依赖存在数据shuffle</strong></p>
+<h3 id="3-1依赖关系下的stage划分"><a href="#3-1依赖关系下的stage划分" class="headerlink" title="3.1依赖关系下的stage划分"></a>3.1依赖关系下的stage划分</h3><p><img src="F:%5CBlogs%5Csource%5Cimages%5C20200308%5Cstage%E5%88%92%E5%88%86.png" alt=""></p>
+<p>在spark中，会根据RDD之间的依赖关系将DAG（有向无环图）划分为不同的stage，对于窄依赖，由于Partition依赖关系的确定性，Partition的转换处理就可以在同一个线程里完成，窄依赖就被划分到同一个stage中，而对于宽依赖，只能等父RDD shuffle处理完成后，下一个stage才能开始接下来的计算。</p>
+<p>因此spark划分stage的思路：<strong>从后往前推，以shuffle操作作为边界，遇到一个宽依赖就分一个stage。</strong></p>
+<h2 id="4-Spark内存模型"><a href="#4-Spark内存模型" class="headerlink" title="4.Spark内存模型"></a>4.Spark内存模型</h2><h3 id="4-1yarn资源调度过程"><a href="#4-1yarn资源调度过程" class="headerlink" title="4.1yarn资源调度过程"></a>4.1yarn资源调度过程</h3><p><img src="F:%5CBlogs%5Csource%5Cimages%5C20200308%5Cyarn%E8%B0%83%E5%BA%A6%E8%BF%87%E7%A8%8B.png" alt=""></p>
+<blockquote>
+<p>说明</p>
+<p>1.Spark Yarn Client向YARN的ResourceManager申请启动Application Master。同时在SparkContent初始化中将创建DAGScheduler和TASKScheduler等，由于我们选择的是Yarn-Client模式，程序会选择YarnClientClusterScheduler和YarnClientSchedulerBackend；</p>
+<p>2.ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，与YARN-Cluster区别的是在该ApplicationMaster不运行SparkContext，只与SparkContext进行联系进行资源的分派；</p>
+<p>3.Client中的SparkContext初始化完毕后，与ApplicationMaster建立通讯，向ResourceManager注册，根据任务信息向ResourceManager申请资源（Container）；</p>
+<p>4.一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向Client中的SparkContext注册并申请Task；</p>
+<p>5.Client中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向Driver汇报运行的状态和进度，以让Client随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务；</p>
+<p>6.应用程序运行完成后，Client的SparkContext向ResourceManager申请注销并关闭自己。</p>
+</blockquote>
+<h3 id="4-2Spark内存结构"><a href="#4-2Spark内存结构" class="headerlink" title="4.2Spark内存结构"></a>4.2Spark内存结构</h3><p><img src="F:%5CBlogs%5Csource%5Cimages%5C20200308%5Cspark%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84.png" alt=""></p>
+
     </div>
 	<div>
 		
@@ -322,7 +454,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Spark/" rel="tag"># Spark</a>
-              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
           </div>
 
         
@@ -394,7 +525,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark-Core"><span class="nav-number">1.</span> <span class="nav-text">Spark Core</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-RDD"><span class="nav-number">1.1.</span> <span class="nav-text">1.RDD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1什么是RDD？"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1什么是RDD？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2RDD的属性和特点"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2RDD的属性和特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3Spark算子类型"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3Spark算子类型</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark-Core"><span class="nav-number">1.</span> <span class="nav-text">Spark Core</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-RDD"><span class="nav-number">1.1.</span> <span class="nav-text">1.RDD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1什么是RDD？"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1什么是RDD？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2RDD的属性和特点"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2RDD的属性和特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3创建RDD"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3创建RDD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4操作RDD"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.4操作RDD</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1transformation操作"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">1.4.1transformation操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2action操作"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">1.4.2action操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-3RDD持久化"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">1.4.3RDD持久化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-共享变量"><span class="nav-number">1.2.</span> <span class="nav-text">2.共享变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1Broadcast-Variable（广播变量）"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1Broadcast Variable（广播变量）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2Accumulator（累加器）"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2Accumulator（累加器）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-宽窄依赖"><span class="nav-number">1.3.</span> <span class="nav-text">3.宽窄依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1依赖关系下的stage划分"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1依赖关系下的stage划分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Spark内存模型"><span class="nav-number">1.4.</span> <span class="nav-text">4.Spark内存模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1yarn资源调度过程"><span class="nav-number">1.4.1.</span> <span class="nav-text">4.1yarn资源调度过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2Spark内存结构"><span class="nav-number">1.4.2.</span> <span class="nav-text">4.2Spark内存结构</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -413,6 +544,12 @@
           <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
@@ -462,12 +599,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">1k</span>
+    <span title="站点总字数">5k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1 分钟</span>
+    <span title="站点阅读时长">4 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>
