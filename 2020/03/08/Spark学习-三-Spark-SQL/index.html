@@ -20,17 +20,21 @@
     var CONFIG = {"hostname":"malei.tech","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://malei.tech/about/index.html">
+  <meta name="description" content="Spark SQLSpark SQL是Spark的一个模块，用于处理结构化数据。 Spark SQL原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark学习(三) Spark SQL">
+<meta property="og:url" content="http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%89-Spark-SQL/index.html">
 <meta property="og:site_name" content="Lei&#39;s Blog">
+<meta property="og:description" content="Spark SQLSpark SQL是Spark的一个模块，用于处理结构化数据。 Spark SQL原理">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-03-09T02:54:49.000Z">
-<meta property="article:modified_time" content="2020-03-09T02:54:49.382Z">
+<meta property="article:published_time" content="2020-03-08T13:01:01.000Z">
+<meta property="article:modified_time" content="2020-03-08T15:20:58.895Z">
 <meta property="article:author" content="malei">
+<meta property="article:tag" content="Spark">
+<meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://malei.tech/about/">
+<link rel="canonical" href="http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%89-Spark-SQL/">
 
 
 <script id="page-configurations">
@@ -38,12 +42,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false
+    isPost : true
   };
 </script>
 
-  <title>about | Lei's Blog
-  </title>
+  <title>Spark学习(三) Spark SQL | Lei's Blog</title>
   
 
 
@@ -185,44 +188,106 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
           <div class="content">
             
 
   <div class="posts-expand">
-    
-    
-    
-    <div class="post-block" lang="zh-CN">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%89-Spark-SQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="malei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lei's Blog">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark学习(三) Spark SQL
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">about
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2020-03-08 21:01:01 / 修改时间：23:20:58" itemprop="dateCreated datePublished" datetime="2020-03-08T21:01:01+08:00">2020-03-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              <span>48</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h1><p>Spark SQL是Spark的一个模块，用于处理结构化数据。</p>
+<h2 id="Spark-SQL原理"><a href="#Spark-SQL原理" class="headerlink" title="Spark SQL原理"></a>Spark SQL原理</h2>
+    </div>
+	<div>
+		
+			<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------本文结束------</div>
+    
+</div>
+		
+	 </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spark/" rel="tag"># Spark</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%BA%8C-Spark-Shuffle/" rel="prev" title="Spark学习(二) Spark Shuffle">
+      <i class="fa fa-chevron-left"></i> Spark学习(二) Spark Shuffle
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
   </div>
 
 
@@ -274,6 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark-SQL"><span class="nav-number">1.</span> <span class="nav-text">Spark SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark-SQL原理"><span class="nav-number">1.1.</span> <span class="nav-text">Spark SQL原理</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

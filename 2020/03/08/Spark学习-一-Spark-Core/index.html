@@ -20,17 +20,23 @@
     var CONFIG = {"hostname":"malei.tech","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://malei.tech/about/index.html">
+  <meta name="description" content="Spark Core1.RDD1.1什么是RDD？RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据抽象，它代表一个不可变、可分区、里面的元素可并行计算的集合。RDD具有数据流模型的特点：自动容错、位置感知性调度和可伸缩性。RDD允许用户在执行多个查询时显式地将工作集缓存在内存中，后续的查询能够重用工作集，这极大地提升了查询速度。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark学习(一) Spark Core">
+<meta property="og:url" content="http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%80-Spark-Core/index.html">
 <meta property="og:site_name" content="Lei&#39;s Blog">
+<meta property="og:description" content="Spark Core1.RDD1.1什么是RDD？RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据抽象，它代表一个不可变、可分区、里面的元素可并行计算的集合。RDD具有数据流模型的特点：自动容错、位置感知性调度和可伸缩性。RDD允许用户在执行多个查询时显式地将工作集缓存在内存中，后续的查询能够重用工作集，这极大地提升了查询速度。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-03-09T02:54:49.000Z">
-<meta property="article:modified_time" content="2020-03-09T02:54:49.382Z">
+<meta property="og:image" content="f:/Blogs/source/img/算子分类一.png">
+<meta property="article:published_time" content="2020-03-08T04:15:07.000Z">
+<meta property="article:modified_time" content="2020-03-08T15:20:00.068Z">
 <meta property="article:author" content="malei">
+<meta property="article:tag" content="Spark">
+<meta property="article:tag" content="大数据">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="f:/Blogs/source/img/算子分类一.png">
 
-<link rel="canonical" href="http://malei.tech/about/">
+<link rel="canonical" href="http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%80-Spark-Core/">
 
 
 <script id="page-configurations">
@@ -38,12 +44,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false
+    isPost : true
   };
 </script>
 
-  <title>about | Lei's Blog
-  </title>
+  <title>Spark学习(一) Spark Core | Lei's Blog</title>
   
 
 
@@ -185,44 +190,159 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
           <div class="content">
             
 
   <div class="posts-expand">
-    
-    
-    
-    <div class="post-block" lang="zh-CN">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%80-Spark-Core/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="malei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lei's Blog">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark学习(一) Spark Core
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">about
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2020-03-08 12:15:07 / 修改时间：23:20:00" itemprop="dateCreated datePublished" datetime="2020-03-08T12:15:07+08:00">2020-03-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              <span>607</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Spark-Core"><a href="#Spark-Core" class="headerlink" title="Spark Core"></a>Spark Core</h1><h2 id="1-RDD"><a href="#1-RDD" class="headerlink" title="1.RDD"></a>1.RDD</h2><h3 id="1-1什么是RDD？"><a href="#1-1什么是RDD？" class="headerlink" title="1.1什么是RDD？"></a>1.1什么是RDD？</h3><p>RDD（Resilient Distributed Dataset）叫做<strong>弹性分布式数据集</strong>，<strong>是Spark中最基本的数据抽象</strong>，它代表一个不可变、可分区、里面的元素可并行计算的集合。RDD具有数据流模型的特点：自动容错、位置感知性调度和可伸缩性。RDD允许用户在执行多个查询时显式地将工作集缓存在内存中，后续的查询能够重用工作集，这极大地提升了查询速度。</p>
+<h3 id="1-2RDD的属性和特点"><a href="#1-2RDD的属性和特点" class="headerlink" title="1.2RDD的属性和特点"></a>1.2RDD的属性和特点</h3><ul>
+<li><p>只读</p>
+<ul>
+<li><p>通过HDFS或者其他持久化系统创建RDD</p>
+</li>
+<li><p>通过transformation将父RDD转化得到新的RDD</p>
+</li>
+<li><p>RDD上保存这前后之间的依赖关系</p>
+</li>
+</ul>
+</li>
+<li><p>Partition</p>
+<ul>
+<li>基本组成单位，RDD在逻辑上按照Partition分块</li>
+<li>分布在各个节点上</li>
+<li>分片数量决定并行计算的粒度</li>
+<li>RDD中保存如何计算每一个分区的函数</li>
+</ul>
+</li>
+<li><p>容错</p>
+<ul>
+<li>失败自动重建</li>
+<li>如果发生部分分区数据丢失，可以通过依赖关系重新计算</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3Spark算子类型"><a href="#1-3Spark算子类型" class="headerlink" title="1.3Spark算子类型"></a>1.3Spark算子类型</h3><ul>
+<li><p>Create</p>
+<ul>
+<li>SparkContext.textFile()</li>
+<li>SparkContext.parallelize()</li>
+</ul>
+</li>
+<li><p>Transformation</p>
+<ul>
+<li>作用于一个或者多个RDD，输出转换后的RD</li>
+<li>如：map, filter, groupBy</li>
+</ul>
+</li>
+<li><p>Action<strong>（只有遇到Action算子时才会真正执行）</strong></p>
+<ul>
+<li><p>会触发Spark提交作业，并将结果返回Driver Program</p>
+</li>
+<li><p>如：reduce, countByKey</p>
+</li>
+</ul>
+</li>
+<li><p>Cache</p>
+<ul>
+<li>cache 缓存/persist 持久化</li>
+</ul>
+</li>
+</ul>
+<img src="F:\Blogs\source\img\算子分类一.png" style="zoom:75%;" />
+    </div>
+	<div>
+		
+			<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------本文结束------</div>
+    
+</div>
+		
+	 </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spark/" rel="tag"># Spark</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%BA%8C-Spark-Shuffle/" rel="next" title="Spark学习(二) Spark Shuffle">
+      Spark学习(二) Spark Shuffle <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
   </div>
 
 
@@ -274,6 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark-Core"><span class="nav-number">1.</span> <span class="nav-text">Spark Core</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-RDD"><span class="nav-number">1.1.</span> <span class="nav-text">1.RDD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1什么是RDD？"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1什么是RDD？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2RDD的属性和特点"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.2RDD的属性和特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3Spark算子类型"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.3Spark算子类型</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

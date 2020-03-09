@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Spark学习(三) Spark SQL</title>
+    <url>/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%89-Spark-SQL/</url>
+    <content><![CDATA[<h1 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h1><p>Spark SQL是Spark的一个模块，用于处理结构化数据。</p>
+<h2 id="Spark-SQL原理"><a href="#Spark-SQL原理" class="headerlink" title="Spark SQL原理"></a>Spark SQL原理</h2>]]></content>
+      <tags>
+        <tag>Spark</tag>
+        <tag>大数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spark学习(二) Spark Shuffle</title>
+    <url>/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%BA%8C-Spark-Shuffle/</url>
+    <content><![CDATA[<h1 id="Spark-Shuffle"><a href="#Spark-Shuffle" class="headerlink" title="Spark Shuffle"></a>Spark Shuffle</h1><h2 id="引起shuffle的算子"><a href="#引起shuffle的算子" class="headerlink" title="引起shuffle的算子"></a>引起shuffle的算子</h2><h2 id="Spark-Shuffle两个阶段"><a href="#Spark-Shuffle两个阶段" class="headerlink" title="Spark Shuffle两个阶段"></a>Spark Shuffle两个阶段</h2><p>每个stage的执行算子首先进行Shuffle Write，将中间结果持久化到磁盘，后继stage先进行Shuffle Read。</p>
+<p>Shuffle过程中会发生数据分区，序列化反序列化，数据压缩，磁盘IO</p>
+<h2 id="Shuffle调优"><a href="#Shuffle调优" class="headerlink" title="Shuffle调优"></a>Shuffle调优</h2><p>1.调整spill频率</p>
+<ul>
+<li>spark.shuffle.file.buffer</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Spark</tag>
+        <tag>大数据</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spark学习(一) Spark Core</title>
+    <url>/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%80-Spark-Core/</url>
+    <content><![CDATA[<h1 id="Spark-Core"><a href="#Spark-Core" class="headerlink" title="Spark Core"></a>Spark Core</h1><h2 id="1-RDD"><a href="#1-RDD" class="headerlink" title="1.RDD"></a>1.RDD</h2><h3 id="1-1什么是RDD？"><a href="#1-1什么是RDD？" class="headerlink" title="1.1什么是RDD？"></a>1.1什么是RDD？</h3><p>RDD（Resilient Distributed Dataset）叫做<strong>弹性分布式数据集</strong>，<strong>是Spark中最基本的数据抽象</strong>，它代表一个不可变、可分区、里面的元素可并行计算的集合。RDD具有数据流模型的特点：自动容错、位置感知性调度和可伸缩性。RDD允许用户在执行多个查询时显式地将工作集缓存在内存中，后续的查询能够重用工作集，这极大地提升了查询速度。</p>
+<h3 id="1-2RDD的属性和特点"><a href="#1-2RDD的属性和特点" class="headerlink" title="1.2RDD的属性和特点"></a>1.2RDD的属性和特点</h3><ul>
+<li><p>只读</p>
+<ul>
+<li><p>通过HDFS或者其他持久化系统创建RDD</p>
+</li>
+<li><p>通过transformation将父RDD转化得到新的RDD</p>
+</li>
+<li><p>RDD上保存这前后之间的依赖关系</p>
+</li>
+</ul>
+</li>
+<li><p>Partition</p>
+<ul>
+<li>基本组成单位，RDD在逻辑上按照Partition分块</li>
+<li>分布在各个节点上</li>
+<li>分片数量决定并行计算的粒度</li>
+<li>RDD中保存如何计算每一个分区的函数</li>
+</ul>
+</li>
+<li><p>容错</p>
+<ul>
+<li>失败自动重建</li>
+<li>如果发生部分分区数据丢失，可以通过依赖关系重新计算</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-3Spark算子类型"><a href="#1-3Spark算子类型" class="headerlink" title="1.3Spark算子类型"></a>1.3Spark算子类型</h3><ul>
+<li><p>Create</p>
+<ul>
+<li>SparkContext.textFile()</li>
+<li>SparkContext.parallelize()</li>
+</ul>
+</li>
+<li><p>Transformation</p>
+<ul>
+<li>作用于一个或者多个RDD，输出转换后的RD</li>
+<li>如：map, filter, groupBy</li>
+</ul>
+</li>
+<li><p>Action<strong>（只有遇到Action算子时才会真正执行）</strong></p>
+<ul>
+<li><p>会触发Spark提交作业，并将结果返回Driver Program</p>
+</li>
+<li><p>如：reduce, countByKey</p>
+</li>
+</ul>
+</li>
+<li><p>Cache</p>
+<ul>
+<li>cache 缓存/persist 持久化</li>
+</ul>
+</li>
+</ul>
+<img src="F:\Blogs\source\img\算子分类一.png" style="zoom:75%;" />]]></content>
+      <tags>
+        <tag>Spark</tag>
+        <tag>大数据</tag>
+      </tags>
+  </entry>
+</search>
