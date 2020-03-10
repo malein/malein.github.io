@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"malei.tech","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="开始使用SpringBoot时是看了技术大佬–纯洁的微笑的博客，内容全面，讲解清晰，经常当做工具书来查看，想要学习SpringBoot的小伙伴可以移步到他的博客。 这次总结也是翻看着大佬的博客，想要整理出一些东西来，算是给自己系统性的加深一下记忆吧。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="springboot总结(一)">
+<meta property="og:url" content="http://malei.tech/2020/03/09/springboot/index.html">
+<meta property="og:site_name" content="Lei&#39;s Blog">
+<meta property="og:description" content="开始使用SpringBoot时是看了技术大佬–纯洁的微笑的博客，内容全面，讲解清晰，经常当做工具书来查看，想要学习SpringBoot的小伙伴可以移步到他的博客。 这次总结也是翻看着大佬的博客，想要整理出一些东西来，算是给自己系统性的加深一下记忆吧。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://malei.tech/2020/03/09/springboot/%E5%8C%85%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2020-03-09T13:16:13.000Z">
+<meta property="article:modified_time" content="2020-03-10T06:05:15.312Z">
+<meta property="article:author" content="malei">
+<meta property="article:tag" content="springboot">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://malei.tech/2020/03/09/springboot/%E5%8C%85%E7%BB%93%E6%9E%84.png">
+
+<link rel="canonical" href="http://malei.tech/2020/03/09/springboot/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>springboot总结(一) | Lei's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Lei's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lei's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://malei.tech/2020/03/09/springboot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="malei">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lei's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          springboot总结(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 21:16:13" itemprop="dateCreated datePublished" datetime="2020-03-09T21:16:13+08:00">2020-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-10 14:05:15" itemprop="dateModified" datetime="2020-03-10T14:05:15+08:00">2020-03-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">框架</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              <span>6.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>开始使用SpringBoot时是看了技术大佬–<a href="http://www.ityouknow.com/" target="_blank" rel="noopener">纯洁的微笑</a>的博客，内容全面，讲解清晰，经常当做工具书来查看，想要学习SpringBoot的小伙伴可以移步到<a href="http://www.ityouknow.com/" target="_blank" rel="noopener">他的博客</a>。</p>
+<p>这次总结也是翻看着大佬的博客，想要整理出一些东西来，算是给自己系统性的加深一下记忆吧。</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="1-谈谈SpringBoot"><a href="#1-谈谈SpringBoot" class="headerlink" title="1.谈谈SpringBoot"></a>1.谈谈SpringBoot</h2><p>​        说到SpringBoot，首先想到的是它<strong>约定优于配置（convention over configuration）</strong>的设计理念，这让我们从大量的样板化的配置文件中解脱出来，使开发人员只需提供最简单的配置甚至不需要配置，引入<strong>Starter</strong>，我们便<strong>开箱即用</strong>，这种简洁是多么幸福的一件事。</p>
+<blockquote>
+<p>参考<a href="http://www.ityouknow.com/springboot/2019/06/03/spring-boot-hot.html" target="_blank" rel="noopener">Spring Boot 为什么这么火？</a></p>
+</blockquote>
+<h2 id="2-SpringBoot的自动配置原理"><a href="#2-SpringBoot的自动配置原理" class="headerlink" title="2.SpringBoot的自动配置原理"></a>2.SpringBoot的自动配置原理</h2><p>​        SpringBoot项目的启动注解是<strong>@SpringBootApplication</strong>，它是由@Configuration，@ComponentScan，@EnableAutoConfiguration三个注解组成，其中<strong>@EnableAutoConfiguration</strong>是实现自动配置的入口，该注解通过@Import注解导入了<strong>AutoConfigurationImportSelector</strong>，并在该类中加载META-INF/spring.factories的配置信息，然后筛选出以EnableAutoConfiguration为key的数据，加载到IOC容器中，从而实现自动配置功能。</p>
+<p>参考<a href="http://www.ityouknow.com/springboot/2019/07/24/springboot-interview.html" target="_blank" rel="noopener">Spring Boot 面试，一个问题就干趴下了！</a></p>
+<h2 id="3-我用过的一些"><a href="#3-我用过的一些" class="headerlink" title="3.我用过的一些"></a>3.我用过的一些</h2><h4 id="3-1mybatis-spring-boot-starter"><a href="#3-1mybatis-spring-boot-starter" class="headerlink" title="3.1mybatis-spring-boot-starter"></a>3.1mybatis-spring-boot-starter</h4><p>参考<a href="http://www.ityouknow.com/springboot/2016/11/06/spring-boot-mybatis.html" target="_blank" rel="noopener">如何优雅的使用 Mybatis</a></p>
+<p>​        SpringBoot把一切都化繁为简，使用mybatis-spring-boot-starter首先需要在pom中引入依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>&#123;mybatis.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>mybatis-spring-boot-starter</code>主要有两种解决方案，一种是使用注解解决一切问题，通过@Insert、@Delete、@Update、@Select注解将SQL绑定到Mapper接口的方法，当实体类属性和数据库字段名不一致时，可以通过@Result来返回结果的字段映射；另一种是简化后的老传统，需要我们去编写mapper.xml文件，通过Mapper接口中的方法名来映射到对应的SQL语句。我个人更偏向于使用第二种方案。下面对第二种方案进行介绍：</p>
+<ol>
+<li><p>引入maven依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>&#123;mybatis.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--数据库驱动--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>application.properties 添加相关配置</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.datasource.url</span>=<span class="string">jdbc:mysql://localhost:3306/test?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true</span></span><br><span class="line"><span class="meta">spring.datasource.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.datasource.password</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.datasource.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#mybatis.config-location=classpath:mybatis-config.xml</span></span><br><span class="line"><span class="meta">mybatis.mapper-locations</span>=<span class="string">classpath:mapper/*.xml</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写Mapper接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserMapper</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function">List&lt;UserEntity&gt; <span class="title">getAll</span><span class="params">()</span></span>;</span><br><span class="line">	</span><br><span class="line">	<span class="function">UserEntity <span class="title">getOne</span><span class="params">(Long id)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(UserEntity user)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">(UserEntity user)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">delete</span><span class="params">(Long id)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加映射文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.xxx.mapper.UserMapper"</span> &gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BaseResultMap"</span> <span class="attr">type</span>=<span class="string">"com.xxx.entity.UserEntity"</span> &gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">property</span>=<span class="string">"id"</span> <span class="attr">jdbcType</span>=<span class="string">"BIGINT"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"userName"</span> <span class="attr">property</span>=<span class="string">"userName"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"passWord"</span> <span class="attr">property</span>=<span class="string">"passWord"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"user_sex"</span> <span class="attr">property</span>=<span class="string">"userSex"</span> <span class="attr">javaType</span>=<span class="string">"com.xxx.enums.UserSexEnum"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">column</span>=<span class="string">"nick_name"</span> <span class="attr">property</span>=<span class="string">"nickName"</span> <span class="attr">jdbcType</span>=<span class="string">"VARCHAR"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">sql</span> <span class="attr">id</span>=<span class="string">"Base_Column_List"</span> &gt;</span></span><br><span class="line">        id, userName, passWord, user_sex, nick_name</span><br><span class="line">    <span class="tag">&lt;/<span class="name">sql</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"getAll"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span>  &gt;</span></span><br><span class="line">       SELECT </span><br><span class="line">       <span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">"Base_Column_List"</span> /&gt;</span></span><br><span class="line">	   FROM users</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"getOne"</span> <span class="attr">parameterType</span>=<span class="string">"java.lang.Long"</span> <span class="attr">resultMap</span>=<span class="string">"BaseResultMap"</span> &gt;</span></span><br><span class="line">        SELECT </span><br><span class="line">       <span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">"Base_Column_List"</span> /&gt;</span></span><br><span class="line">	   FROM users</span><br><span class="line">	   WHERE id = #&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">"insert"</span> <span class="attr">parameterType</span>=<span class="string">"com.xxx.entity.UserEntity"</span> &gt;</span></span><br><span class="line">       INSERT INTO </span><br><span class="line">       		users</span><br><span class="line">       		(userName,passWord,user_sex) </span><br><span class="line">       	VALUES</span><br><span class="line">       		(#&#123;userName&#125;, #&#123;passWord&#125;, #&#123;userSex&#125;)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">"update"</span> <span class="attr">parameterType</span>=<span class="string">"com.xxx.entity.UserEntity"</span> &gt;</span></span><br><span class="line">       UPDATE </span><br><span class="line">       		users </span><br><span class="line">       SET </span><br><span class="line">       	<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"userName != null"</span>&gt;</span>userName = #&#123;userName&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">       	<span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">"passWord != null"</span>&gt;</span>passWord = #&#123;passWord&#125;,<span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">       	nick_name = #&#123;nickName&#125;</span><br><span class="line">       WHERE </span><br><span class="line">       		id = #&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">"delete"</span> <span class="attr">parameterType</span>=<span class="string">"java.lang.Long"</span> &gt;</span></span><br><span class="line">       DELETE FROM</span><br><span class="line">       		 users </span><br><span class="line">       WHERE </span><br><span class="line">       		 id =#&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+</li>
+</ol>
+<h4 id="3-2定时任务"><a href="#3-2定时任务" class="headerlink" title="3.2定时任务"></a>3.2定时任务</h4><blockquote>
+<p>参考<a href="http://www.ityouknow.com/springboot/2016/12/02/spring-boot-scheduler.html" target="_blank" rel="noopener">定时任务</a></p>
+</blockquote>
+<p>项目中经常会有定时执行的需求，在SpringBoot中可以通过注解快速实现。</p>
+<ol>
+<li><p>引入maven依赖</p>
+<p>引入Spring Boot Starter 包即可</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动类添加注解启用定时</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableScheduling</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(Application<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建定时任务实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SchedulerTask</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Scheduled</span>(cron=<span class="string">"*/6 * * * * ?"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doSomething1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//TO DO</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     <span class="meta">@Scheduled</span>(fixedRate = <span class="number">6000</span>)</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doSomething2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//TO DO</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="3-3多数据源"><a href="#3-3多数据源" class="headerlink" title="3.3多数据源"></a>3.3多数据源</h4><blockquote>
+<p>参考<a href="http://www.ityouknow.com/springboot/2016/11/25/spring-boot-multi-mybatis.html" target="_blank" rel="noopener">Mybatis多数据源最简解决方案</a></p>
+</blockquote>
+<p>项目中遇到应用需要连接多个数据库的需求，可以通过自定义配置类实现。</p>
+<ol>
+<li><p>配置文件中定义数据源</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#数据源1</span></span><br><span class="line"><span class="meta">api.datasource.driverClassName</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">api.datasource.url</span>=<span class="string">jdbc:mysql://localhost:3306/test2?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true</span></span><br><span class="line"><span class="meta">api.datasource.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">api.datasource.password</span>=<span class="string">root</span></span><br><span class="line"><span class="comment">#数据源2</span></span><br><span class="line"><span class="meta">secret.datasource.driverClassName</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">secret.datasource.url</span>=<span class="string">jdbc:mysql://localhost:3306/test2?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=true</span></span><br><span class="line"><span class="meta">secret.datasource.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">secret.datasource.password</span>=<span class="string">root</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自定义实现配置类</p>
+<p><strong>配置类中需要通过@Primary指定主库</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="comment">// baskPackages指定要扫描的包</span></span><br><span class="line"><span class="meta">@MapperScan</span>(basePackages = <span class="string">"com.xxx.apidao"</span>, sqlSessionTemplateRef  = <span class="string">"apiSqlSessionTemplate"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApiDataSource</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"apiData"</span>)</span><br><span class="line">    <span class="comment">// 指定application.properteis中对应属性的前缀</span></span><br><span class="line">    <span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"api.datasource"</span>) </span><br><span class="line">    <span class="comment">// 指定一个数据源作为主库，其他的配置类不需要@Primary注解</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">apiData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"apiSqlSessionFactory"</span>)</span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">apiSqlSessionFactory</span><span class="params">(@Qualifier(<span class="string">"apiData"</span>)</span> DataSource dataSource) <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        SqlSessionFactoryBean bean = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        bean.setDataSource(dataSource);</span><br><span class="line">        <span class="comment">// 指定xml所在的包，如果不同数据源的xml放在一个包，可以通过不同后缀名来区分</span></span><br><span class="line">        bean.setMapperLocations(<span class="keyword">new</span> PathMatchingResourcePatternResolver().getResources(<span class="string">"classpath:mapper/*ApiMapper.xml"</span>));</span><br><span class="line">        <span class="keyword">return</span> bean.getObject();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"apiTransactionManager"</span>)</span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSourceTransactionManager <span class="title">apiTransactionManager</span><span class="params">(@Qualifier(<span class="string">"apiData"</span>)</span> DataSource dataSource) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DataSourceTransactionManager(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(name = <span class="string">"apiSqlSessionTemplate"</span>)</span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> SqlSessionTemplate <span class="title">apiSqlSessionTemplate</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			@Qualifier(<span class="string">"apiSqlSessionFactory"</span>)</span> SqlSessionFactory sqlSessionFactory) <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SqlSessionTemplate(sqlSessionFactory);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DAO层及xml文件</p>
+<p>按下图所示组织包结构，将对应的dao层接口、xml文件按照配置类放到对应位置，xml可分文件夹存放，也可以在同一文件夹中通过不同前/后缀名称来区分。编写接口和xml时注意好对应关系即可。</p>
+<p><img src="/2020/03/09/springboot/%E5%8C%85%E7%BB%93%E6%9E%84.png" alt="包结构"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApiUserDao</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.xxx.aipdao.ApiUserDao"</span>&gt;</span></span><br><span class="line">	<span class="comment">&lt;!-- SQL --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+</li>
+</ol>
+
+    </div>
+	<div>
+		
+			<div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------本文结束------</div>
+    
+</div>
+		
+	 </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/springboot/" rel="tag"># springboot</a>
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%89-Spark-SQL/" rel="prev" title="Spark学习(三) Spark SQL">
+      <i class="fa fa-chevron-left"></i> Spark学习(三) Spark SQL
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-谈谈SpringBoot"><span class="nav-number">1.</span> <span class="nav-text">1.谈谈SpringBoot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-SpringBoot的自动配置原理"><span class="nav-number">2.</span> <span class="nav-text">2.SpringBoot的自动配置原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-我用过的一些"><span class="nav-number">3.</span> <span class="nav-text">3.我用过的一些</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1mybatis-spring-boot-starter"><span class="nav-number">3.0.1.</span> <span class="nav-text">3.1mybatis-spring-boot-starter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2定时任务"><span class="nav-number">3.0.2.</span> <span class="nav-text">3.2定时任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3多数据源"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.3多数据源</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="malei"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">malei</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/malein" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;malein" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:malein@163.com" title="E-Mail → mailto:malein@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/yourname" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">malei</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">11k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

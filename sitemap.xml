@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://malei.tech/2020/03/09/springboot/</loc>
+    
+    <lastmod>2020-03-10T06:05:15.312Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%BA%8C-Spark-Shuffle/</loc>
+    
+    <lastmod>2020-03-09T14:05:35.889Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%89-Spark-SQL/</loc>
+    
+    <lastmod>2020-03-09T14:05:20.919Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%80-Spark-Core/</loc>
     
-    <lastmod>2020-03-09T09:47:17.037Z</lastmod>
+    <lastmod>2020-03-09T14:05:08.159Z</lastmod>
     
   </url>
   
@@ -26,20 +47,6 @@
     <loc>http://malei.tech/categories/index.html</loc>
     
     <lastmod>2020-03-08T15:31:33.169Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%B8%89-Spark-SQL/</loc>
-    
-    <lastmod>2020-03-08T15:20:58.895Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://malei.tech/2020/03/08/Spark%E5%AD%A6%E4%B9%A0-%E4%BA%8C-Spark-Shuffle/</loc>
-    
-    <lastmod>2020-03-08T15:20:38.174Z</lastmod>
     
   </url>
   
