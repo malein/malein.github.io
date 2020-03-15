@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://malei.tech/"/>
-  <updated>2020-03-14T09:09:54.887Z</updated>
+  <updated>2020-03-14T14:49:30.970Z</updated>
   <id>http://malei.tech/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spark Streaming</title>
+    <link href="http://malei.tech/2020/03/14/Spark-Streaming/"/>
+    <id>http://malei.tech/2020/03/14/Spark-Streaming/</id>
+    <published>2020-03-14T12:48:30.000Z</published>
+    <updated>2020-03-14T14:49:30.970Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="大数据" scheme="http://malei.tech/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+      <category term="流式计算" scheme="http://malei.tech/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%B5%81%E5%BC%8F%E8%AE%A1%E7%AE%97/"/>
+    
+    
+      <category term="spark" scheme="http://malei.tech/tags/spark/"/>
+    
+  </entry>
   
   <entry>
     <title>Kafka学习笔记</title>
