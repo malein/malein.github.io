@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ElasticSearch</title>
+    <url>/2020/03/23/ElasticSearch/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>大数据</category>
+      </categories>
+      <tags>
+        <tag>ElasticSearch</tag>
+        <tag>搜索引擎</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spark Streaming</title>
     <url>/2020/03/14/Spark-Streaming/</url>
     <content><![CDATA[]]></content>
@@ -66,7 +78,7 @@
 <h2 id="3-Kafka消费者"><a href="#3-Kafka消费者" class="headerlink" title="3.Kafka消费者"></a>3.Kafka消费者</h2><h3 id="3-1消费模式"><a href="#3-1消费模式" class="headerlink" title="3.1消费模式"></a>3.1消费模式</h3><p><img src="/2020/03/12/Kafka/%E6%B6%88%E8%B4%B9%E6%A8%A1%E5%BC%8F.png" alt="消费模式"></p>
 <p>说明：</p>
 <ol>
-<li>⼀一个主题可以被多个组消费</li>
+<li>一个主题可以被多个组消费</li>
 <li>同一组中不同的消费者消费的分区一定不会重复，所有的消费者一起消费所有分区</li>
 <li>主题可以被一个组反复消费，只要消息没有被删除</li>
 <li>再均衡：分区的所有权从一个消费者转移到另一个消费者</li>
