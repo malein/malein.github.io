@@ -20,13 +20,15 @@
     var CONFIG = {"hostname":"malei.tech","root":"/","scheme":"Muse","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="article">
+  <meta name="description" content="1.ElasticSearch中的名词解释1.1ElasticSearch和DB的类比 Relational DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns ElasticSearch -&gt; Indexes -&gt; Types -&gt; Documents -&gt; Fields  1.2名词解释 集群（Cluster">
+<meta property="og:type" content="article">
 <meta property="og:title" content="ElasticSearch">
 <meta property="og:url" content="http://malei.tech/2020/03/23/ElasticSearch/index.html">
 <meta property="og:site_name" content="Lei&#39;s Blog">
+<meta property="og:description" content="1.ElasticSearch中的名词解释1.1ElasticSearch和DB的类比 Relational DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns ElasticSearch -&gt; Indexes -&gt; Types -&gt; Documents -&gt; Fields  1.2名词解释 集群（Cluster">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-23T06:43:39.000Z">
-<meta property="article:modified_time" content="2020-03-23T07:22:06.018Z">
+<meta property="article:modified_time" content="2020-03-31T08:18:09.300Z">
 <meta property="article:author" content="malei">
 <meta property="article:tag" content="ElasticSearch">
 <meta property="article:tag" content="搜索引擎">
@@ -217,10 +219,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-23 14:43:39 / 修改时间：15:22:06" itemprop="dateCreated datePublished" datetime="2020-03-23T14:43:39+08:00">2020-03-23</time>
+              <time title="创建时间：2020-03-23 14:43:39" itemprop="dateCreated datePublished" datetime="2020-03-23T14:43:39+08:00">2020-03-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-31 16:18:09" itemprop="dateModified" datetime="2020-03-31T16:18:09+08:00">2020-03-31</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -236,7 +244,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-file-word-o"></i>
               </span>
-              <span>0</span>
+              <span>588</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -254,7 +262,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="1-ElasticSearch中的名词解释"><a href="#1-ElasticSearch中的名词解释" class="headerlink" title="1.ElasticSearch中的名词解释"></a>1.ElasticSearch中的名词解释</h2><h3 id="1-1ElasticSearch和DB的类比"><a href="#1-1ElasticSearch和DB的类比" class="headerlink" title="1.1ElasticSearch和DB的类比"></a>1.1ElasticSearch和DB的类比</h3><ul>
+<li>Relational DB -&gt; Databases -&gt; Tables -&gt; Rows -&gt; Columns</li>
+<li>ElasticSearch -&gt; Indexes -&gt; Types -&gt; Documents -&gt; Fields</li>
+</ul>
+<h3 id="1-2名词解释"><a href="#1-2名词解释" class="headerlink" title="1.2名词解释"></a>1.2名词解释</h3><ul>
+<li><p>集群（Cluster）</p>
+<p>集群是一个或多个节点的集合，它们共同保存数据，并提供跨节点的联合索引和搜索功能。</p>
+</li>
+<li><p>节点（Node）</p>
+<p>集群内的单个节点，一般一台服务器部署一个节点。分为两类：</p>
+<ul>
+<li>master node：负责维护集群信息，如节点网络结构，节点的增删</li>
+<li>data node：负责提供索引和搜索服务</li>
+</ul>
+</li>
+<li><p>索引（Index）</p>
+<p>索引是具有某些类似特征的文档集合，类似于数据库中database</p>
+</li>
+<li><p>索引类型（Type）</p>
+<p>类似数据库中Table。在创建index type时一般会同时定义mapping，通过mapping定义type中的数据结构</p>
+</li>
+<li><p>文档（Document）</p>
+<p>索引读写的单元，类似数据库中row</p>
+</li>
+<li><p>分片（Shard）</p>
+<p>索引数据切片，每个shard对应Lucene中的索引，有两种类型：</p>
+<ul>
+<li>Primary shard：数据主分片，主分片数决定了整个索引会被切分成多少份，在建立索引时就需要指定</li>
+<li>replicate shard：主分片副本，副本分片数决定了一个主分片有多少份拷贝，可以动态调整</li>
+</ul>
+</li>
+</ul>
+
     </div>
 	<div>
 		
@@ -345,6 +385,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-ElasticSearch中的名词解释"><span class="nav-number">1.</span> <span class="nav-text">1.ElasticSearch中的名词解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1ElasticSearch和DB的类比"><span class="nav-number">1.1.</span> <span class="nav-text">1.1ElasticSearch和DB的类比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2名词解释"><span class="nav-number">1.2.</span> <span class="nav-text">1.2名词解释</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -418,7 +459,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">15k</span>
+    <span title="站点总字数">16k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
